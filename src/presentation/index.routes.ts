@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { TorrentSearchRouter } from "./torrent-search/index.route";
+import { UserRouter } from "./user/index.route";
 
 const router = Router();
 
-router.use("/search", TorrentSearchRouter);
+router.use("/user", UserRouter);
 
 export { router };

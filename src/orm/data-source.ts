@@ -1,5 +1,5 @@
 import { DataSource } from "typeorm";
-import { Start } from "./entity/Start";
+import { User } from "./entity/User";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -10,7 +10,7 @@ export const AppDataSource = new DataSource({
   database: "bluebox",
   synchronize: true,
   logging: true,
-  entities: [Start],
+  entities: [User],
   subscribers: [],
   migrations: [],
 });

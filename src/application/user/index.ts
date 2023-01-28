@@ -7,38 +7,28 @@ import { ErrorResponse } from "../../presentation/ErrorResponse";
 import { SuccessResponse } from "../../presentation/SuccessResponse";
 
 export const UserApplication = {
-  userExists: async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const userExists = await AppDataSource.getRepository(User).exist({
-        where: {
-          id: req.params.id,
-        },
-      });
-
-      if (!userExists) throw new Error("User does not exists");
-
-      return next();
-    } catch (err: any) {
-      return ErrorResponse({
-        res,
-        message: err.message,
-      });
-    }
-  },
-
   async create(req: Request, res: Response) {
     try {
       const user = {
         id: v4(),
         name: req.body.name,
+        email: req.body.email,
         password: req.body.password
-          ? await bcrypt.hash(req.body.password, 10)
+          ? bcrypt.hashSync(req.body.password, 10)
           : "",
       };
 
-      if (!user.name || !user.password) {
+      if (!user.name || !user.password || !user.email) {
         throw new Error("Missing user data");
       }
+
+      const userExists = await AppDataSource.getRepository(User).findOne({
+        where: {
+          email: user.email,
+        },
+      });
+
+      if (userExists) throw new Error("User already exists");
 
       await AppDataSource.getRepository(User).save(user);
 
@@ -49,6 +39,7 @@ export const UserApplication = {
         data: {
           id: user.id,
           name: user.name,
+          email: user.email,
         },
       });
     } catch (err: any) {
@@ -74,6 +65,7 @@ export const UserApplication = {
         data: {
           id: user?.id,
           name: user?.name,
+          email: user?.email,
         },
       });
     } catch (err: any) {
@@ -95,6 +87,7 @@ export const UserApplication = {
         data: users.map((user) => ({
           id: user.id,
           name: user.name,
+          email: user.email,
         })),
       });
     } catch (err: any) {
@@ -110,6 +103,7 @@ export const UserApplication = {
       await AppDataSource.getRepository(User).update(req.params.id, {
         name: req.body.name,
         password: await bcrypt.hash(req.body.password, 10),
+        email: req.body.email,
       });
 
       return SuccessResponse({
@@ -119,6 +113,7 @@ export const UserApplication = {
         data: {
           id: req.params.id,
           name: req.body.name,
+          email: req.body.email,
         },
       });
     } catch (err: any) {
@@ -140,6 +135,7 @@ export const UserApplication = {
         data: {
           id: req.params.id,
           name: req.body.name,
+          email: req.body.email,
         },
       });
     } catch (err: any) {

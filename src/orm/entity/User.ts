@@ -10,5 +10,8 @@ export class User implements IUser {
   name: string;
 
   @Column()
+  email: string;
+
+  @Column()
   password: string;
 }

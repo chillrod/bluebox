@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { AppDataSource } from "../../orm/data-source";
 import { User } from "../../orm/entity/User";
 import bcrypt from "bcryptjs";
@@ -16,9 +16,12 @@ export const UserApplication = {
         password: req.body.password
           ? bcrypt.hashSync(req.body.password, 10)
           : "",
+        role: req.body.role,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
-      if (!user.name || !user.password || !user.email) {
+      if (!user.name || !user.password || !user.email || !user.role) {
         throw new Error("Missing user data");
       }
 
@@ -40,6 +43,7 @@ export const UserApplication = {
           id: user.id,
           name: user.name,
           email: user.email,
+          role: user.role,
         },
       });
     } catch (err: any) {
@@ -66,6 +70,8 @@ export const UserApplication = {
           id: user?.id,
           name: user?.name,
           email: user?.email,
+          role: user?.role,
+          createdAt: user?.createdAt,
         },
       });
     } catch (err: any) {
@@ -88,6 +94,9 @@ export const UserApplication = {
           id: user.id,
           name: user.name,
           email: user.email,
+          role: user.role,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
         })),
       });
     } catch (err: any) {
@@ -104,6 +113,7 @@ export const UserApplication = {
         name: req.body.name,
         password: await bcrypt.hash(req.body.password, 10),
         email: req.body.email,
+        updatedAt: new Date(),
       });
 
       return SuccessResponse({

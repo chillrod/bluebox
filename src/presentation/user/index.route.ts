@@ -4,7 +4,11 @@ import { UserApplication } from "../../application/user";
 import { UserMiddlewares } from "../../application/user/middlewares";
 
 const route = Router();
-const middlewares = [AuthMiddlewares.verifyToken, UserMiddlewares.userExists];
+const middlewares = [
+  AuthMiddlewares.verifyToken,
+  UserMiddlewares.userExists,
+  AuthMiddlewares.isSameUser,
+];
 
 route.get("/", AuthMiddlewares.verifyToken, UserApplication.getAll);
 route.post("/create", UserApplication.create);

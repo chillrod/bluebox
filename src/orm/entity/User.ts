@@ -14,4 +14,13 @@ export class User implements IUser {
 
   @Column()
   password: string;
+
+  @Column()
+  createdAt: Date;
+
+  @Column()
+  updatedAt: Date;
+
+  @Column()
+  role: number;
 }

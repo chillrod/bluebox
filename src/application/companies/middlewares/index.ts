@@ -6,11 +6,12 @@ import { ErrorResponse } from "../../../presentation/ErrorResponse";
 export const CompaniesMiddlewares = {
   companyExists: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { companyId } = req.params;
+      const { companyId, userId } = req.params;
 
       const exists = await AppDataSource.getRepository(Companies).exist({
         where: {
           id: companyId,
+          userId: { id: userId },
         },
       });
 
@@ -26,6 +27,7 @@ export const CompaniesMiddlewares = {
       });
     }
   },
+
   userAlreadyHasCompanyWithSameName: async (
     req: Request,
     res: Response,

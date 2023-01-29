@@ -13,6 +13,7 @@ route.get(
     AuthMiddlewares.verifyToken,
     UserMiddlewares.userExists,
     CompaniesMiddlewares.companyExists,
+    ProductsMiddlewares.productExists,
   ],
   ProductsApplication.get
 );

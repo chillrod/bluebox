@@ -1,5 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  JoinColumn,
+  ManyToOne,
+} from "typeorm";
 import { ICompanies } from "../../application/companies/interfaces/ICompanies";
+import { User } from "./User";
 
 @Entity()
 export class Companies implements ICompanies {
@@ -9,8 +17,9 @@ export class Companies implements ICompanies {
   @Column()
   name: string;
 
-  @Column()
-  userId: string;
+  @ManyToOne(() => User)
+  @JoinColumn({ name: "userId" })
+  userId: User;
 
   @Column()
   zipCode: string;

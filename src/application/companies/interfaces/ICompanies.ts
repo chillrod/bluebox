@@ -1,7 +1,9 @@
+import { IUser } from "../../user/interface/IUser";
+
 export interface ICompanies {
   id: string;
   name: string;
-  userId: string;
+  userId: IUser;
   categories: string[];
   zipCode: string;
   phone: string;

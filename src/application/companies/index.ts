@@ -13,12 +13,12 @@ export const CompaniesApplication = {
       const company = {
         id: v4(),
         name,
-        userId: req.params.id,
         zipCode,
         categories,
         phone,
         createdAt: new Date(),
         updatedAt: new Date(),
+        userId: { id: req.params.id },
       };
 
       await AppDataSource.getRepository(Companies).save(company);
@@ -45,7 +45,7 @@ export const CompaniesApplication = {
 
       const company = await AppDataSource.getRepository(Companies).find({
         where: {
-          userId: id,
+          userId: { id: id },
         },
       });
 

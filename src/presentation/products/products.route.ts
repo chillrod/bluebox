@@ -9,12 +9,7 @@ const route = Router();
 
 route.get(
   "/:userId/:companyId/:productId",
-  [
-    AuthMiddlewares.verifyToken,
-    UserMiddlewares.userExists,
-    CompaniesMiddlewares.companyExists,
-    ProductsMiddlewares.productExists,
-  ],
+  [CompaniesMiddlewares.companyExists, ProductsMiddlewares.productExists],
   ProductsApplication.get
 );
 
@@ -30,11 +25,7 @@ route.get(
 
 route.post(
   "/:userId/:companyId",
-  [
-    AuthMiddlewares.verifyToken,
-    UserMiddlewares.userExists,
-    CompaniesMiddlewares.companyExists,
-  ],
+  CompaniesMiddlewares.companyExists,
   ProductsApplication.create
 );
 
@@ -51,12 +42,7 @@ route.put(
 
 route.delete(
   "/:userId/:companyId/:productId",
-  [
-    AuthMiddlewares.verifyToken,
-    UserMiddlewares.userExists,
-    CompaniesMiddlewares.companyExists,
-    ProductsMiddlewares.productExists,
-  ],
+  [CompaniesMiddlewares.companyExists, ProductsMiddlewares.productExists],
   ProductsApplication.delete
 );
 

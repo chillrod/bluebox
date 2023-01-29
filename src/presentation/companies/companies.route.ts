@@ -6,25 +6,23 @@ import { UserMiddlewares } from "../../application/user/middlewares";
 
 const route = Router();
 
-const middlewares = [AuthMiddlewares.verifyToken, UserMiddlewares.userExists];
-
 route.post(
   "/:id",
-  [...middlewares, CompaniesMiddlewares.userAlreadyHasCompanyWithSameName],
+  [CompaniesMiddlewares.userAlreadyHasCompanyWithSameName],
   CompaniesApplication.create
 );
 
-route.get("/:id", middlewares, CompaniesApplication.get);
+route.get("/:id", CompaniesApplication.get);
 
 route.put(
   "/:id/:companyId",
-  [...middlewares, CompaniesMiddlewares.companyExists],
+  CompaniesMiddlewares.companyExists,
   CompaniesApplication.update
 );
 
 route.delete(
   "/:id/:companyId",
-  [...middlewares, CompaniesMiddlewares.companyExists],
+  CompaniesMiddlewares.companyExists,
   CompaniesApplication.delete
 );
 

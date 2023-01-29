@@ -8,21 +8,34 @@ const route = Router();
 
 route.post(
   "/:id",
-  [CompaniesMiddlewares.userAlreadyHasCompanyWithSameName],
+  [
+    AuthMiddlewares.verifyToken,
+    UserMiddlewares.userExists,
+    CompaniesMiddlewares.userAlreadyHasCompanyWithSameName,
+  ],
   CompaniesApplication.create
 );
 
-route.get("/:id", CompaniesApplication.get);
+route.get("/:id", [AuthMiddlewares.verifyToken], CompaniesApplication.get);
+route.get("/", CompaniesApplication.getAll);
 
 route.put(
   "/:id/:companyId",
-  CompaniesMiddlewares.companyExists,
+  [
+    AuthMiddlewares.verifyToken,
+    UserMiddlewares.userExists,
+    CompaniesMiddlewares.companyExists,
+  ],
   CompaniesApplication.update
 );
 
 route.delete(
   "/:id/:companyId",
-  CompaniesMiddlewares.companyExists,
+  [
+    AuthMiddlewares.verifyToken,
+    UserMiddlewares.userExists,
+    CompaniesMiddlewares.companyExists,
+  ],
   CompaniesApplication.delete
 );
 

@@ -62,6 +62,24 @@ export const CompaniesApplication = {
     }
   },
 
+  getAll: async (req: Request, res: Response) => {
+    try {
+      const company = await AppDataSource.getRepository(Companies).find();
+
+      return SuccessResponse({
+        res,
+        req,
+        message: "Companies found successfully",
+        data: company,
+      });
+    } catch (err: any) {
+      return ErrorResponse({
+        res,
+        message: err.message,
+      });
+    }
+  },
+
   delete: async (req: Request, res: Response) => {
     try {
       const { companyId } = req.params;

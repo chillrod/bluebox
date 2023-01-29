@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { v4 } from "uuid";
 import { AppDataSource } from "../../orm/data-source";
+import { Companies } from "../../orm/entity/Companies";
 import { Products } from "../../orm/entity/Products";
 import { ErrorResponse } from "../../presentation/ErrorResponse";
 import { SuccessResponse } from "../../presentation/SuccessResponse";
@@ -117,13 +118,45 @@ export const ProductsApplication = {
     }
   },
 
-  getAll: async (req: Request, res: Response) => {
+  getAllByCompanieUser: async (req: Request, res: Response) => {
     try {
-      const { companyId } = req.params;
+      const { companyId, userId } = req.params;
+
+      const userIsOwner = await AppDataSource.getRepository(Companies).exist({
+        where: {
+          userId: { id: userId },
+        },
+      });
 
       const products = await AppDataSource.getRepository(Products).find({
         where: {
           company: { id: companyId },
+          ...(!userIsOwner && { active: true }),
+        },
+      });
+
+      return SuccessResponse({
+        res,
+        req,
+        message: "Products fetched successfully",
+        data: products,
+      });
+    } catch (err: any) {
+      return ErrorResponse({
+        res,
+        message: err.message,
+      });
+    }
+  },
+
+  getAll: async (req: Request, res: Response) => {
+    const { companyId } = req.params;
+    
+    try {
+      const products = await AppDataSource.getRepository(Products).find({
+        where: {
+          company: { id: companyId },
+          active: true,
         },
       });
 

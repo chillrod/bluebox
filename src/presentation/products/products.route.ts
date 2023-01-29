@@ -20,8 +20,10 @@ route.get(
     UserMiddlewares.userExists,
     CompaniesMiddlewares.companyExists,
   ],
-  ProductsApplication.getAll
+  ProductsApplication.getAllByCompanieUser
 );
+
+route.get("/:companyId", ProductsApplication.getAll);
 
 route.post(
   "/:userId/:companyId",

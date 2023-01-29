@@ -8,13 +8,12 @@ import { SuccessResponse } from "../../presentation/SuccessResponse";
 export const CompaniesApplication = {
   create: async (req: Request, res: Response) => {
     try {
-      const { name, zipCode, categories, phone } = req.body;
+      const { name, zipCode, phone } = req.body;
 
       const company = {
         id: v4(),
         name,
         zipCode,
-        categories,
         phone,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -89,12 +88,11 @@ export const CompaniesApplication = {
     try {
       const { companyId } = req.params;
 
-      const { name, zipCode, categories, phone } = req.body;
+      const { name, zipCode, phone } = req.body;
 
       const company = {
         name,
         zipCode,
-        categories,
         phone,
         updatedAt: new Date(),
       };

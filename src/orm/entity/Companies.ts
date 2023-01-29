@@ -2,11 +2,10 @@ import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
-  OneToOne,
   JoinColumn,
   ManyToOne,
 } from "typeorm";
-import { ICompanies } from "../../application/companies/interfaces/ICompanies";
+import { ICompanies } from "../../application/companies/interface/ICompanies";
 import { User } from "./User";
 
 @Entity()
@@ -17,15 +16,14 @@ export class Companies implements ICompanies {
   @Column()
   name: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, {
+    cascade: ["insert", "update", "remove"],
+  })
   @JoinColumn({ name: "userId" })
   userId: User;
 
   @Column()
   zipCode: string;
-
-  @Column("text", { array: true })
-  categories: string[];
 
   @Column()
   phone: string;

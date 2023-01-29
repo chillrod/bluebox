@@ -4,7 +4,6 @@ export interface ICompanies {
   id: string;
   name: string;
   userId: IUser;
-  categories: string[];
   zipCode: string;
   phone: string;
   createdAt: Date;

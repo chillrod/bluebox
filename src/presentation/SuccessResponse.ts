@@ -24,7 +24,7 @@ export const SuccessResponse = (props: ISuccessResponse) => {
     success: true,
     data: {
       message: props.message,
-      items: props.data,
+      result: props.data,
     },
   });
 };

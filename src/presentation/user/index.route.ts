@@ -11,9 +11,13 @@ const middlewares = [
 ];
 
 route.get("/", AuthMiddlewares.verifyToken, UserApplication.getAll);
+
 route.post("/create", UserApplication.create);
+
 route.get("/:id", middlewares, UserApplication.get);
+
 route.put("/:id", middlewares, UserApplication.update);
+
 route.delete("/:id", middlewares, UserApplication.delete);
 
-export { route as UserRouter };
+export { route as UsersRoute };

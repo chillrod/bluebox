@@ -1,5 +1,6 @@
 import { DataSource } from "typeorm";
 import { Companies } from "./entity/Companies";
+import { Products } from "./entity/Products";
 import { User } from "./entity/User";
 
 export const AppDataSource = new DataSource({
@@ -11,7 +12,7 @@ export const AppDataSource = new DataSource({
   database: "bluebox",
   synchronize: true,
   logging: true,
-  entities: [User, Companies],
+  entities: [User, Companies, Products],
   subscribers: [],
   migrations: [],
 });

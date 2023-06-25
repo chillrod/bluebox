@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { IIntegrations } from "../../application/integrations/interface/IIntegrations";
+import { IIntegrations } from "../../application/integrations/integrations.model";
 
 @Entity()
 export class Integrations implements IIntegrations {

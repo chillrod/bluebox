@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { AppDataSource } from "../../../orm/data-source";
-import { User } from "../../../orm/entity/User";
+import { AppDataSource } from "../../orm/data-source";
+import { User } from "../../orm/entity/User";
 
 export const UserMiddlewares = {
   isSameUser: async (req: Request, res: Response, next: NextFunction) => {

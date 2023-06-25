@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { SuccessResponse } from "../../presentation/SuccessResponse";
-import { ErrorResponse } from "../../presentation/ErrorResponse";
 import jwt from "jsonwebtoken";
 
 export const AuthApplication = {

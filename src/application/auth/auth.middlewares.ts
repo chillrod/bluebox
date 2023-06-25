@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { ErrorResponse } from "../../../presentation/ErrorResponse";
 
 import jwt from "jsonwebtoken";
-import { AppDataSource } from "../../../orm/data-source";
-import { User } from "../../../orm/entity/User";
+import { AppDataSource } from "../../orm/data-source";
+import { User } from "../../orm/entity/User";
 
 import bcrypt from "bcryptjs";
 

@@ -3,7 +3,6 @@ import { AppDataSource } from "../../orm/data-source";
 import { User } from "../../orm/entity/User";
 import bcrypt from "bcryptjs";
 import { v4 } from "uuid";
-import { ErrorResponse } from "../../presentation/ErrorResponse";
 import { SuccessResponse } from "../../presentation/SuccessResponse";
 
 export const UserApplication = {
@@ -135,7 +134,6 @@ export const UserApplication = {
         },
       });
     } catch (err: any) {
-      console.log("🚀 ~ file: index.ts:128 ~ delete ~ err:", err);
       next(err);
     }
   },

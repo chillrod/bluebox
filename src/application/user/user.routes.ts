@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { AuthMiddlewares } from "../../application/auth/middlewares";
-import { UserApplication } from "../../application/user";
-import { UserMiddlewares } from "../../application/user/middlewares";
+import { AuthMiddlewares } from "../auth/auth.middlewares";
+import { UserApplication } from "./user.service";
+import { UserMiddlewares } from "./user.middlewares";
 
 const route = Router();
 

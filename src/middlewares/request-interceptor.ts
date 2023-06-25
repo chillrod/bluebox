@@ -7,7 +7,6 @@ export const errorHandler: ErrorRequestHandler = (
   response,
   next
 ) => {
-  console.log("🚀 ~ file: request-interceptor.ts:10 ~ error:", error);
   const statusCode = error?.status;
 
   return ErrorResponse({

@@ -5,11 +5,15 @@ import { UserMiddlewares } from "./user.middlewares";
 
 const route = Router();
 
+route.post("/create", UserApplication.create);
+
 route.get("/", AuthMiddlewares.verifyToken, UserApplication.getAll);
 
-route.get("/:id", AuthMiddlewares.verifyToken, UserApplication.get);
-
-route.post("/create", UserApplication.create);
+route.get(
+  "/:id",
+  [AuthMiddlewares.verifyToken, UserMiddlewares.userExists],
+  UserApplication.get
+);
 
 route.put(
   "/:id",

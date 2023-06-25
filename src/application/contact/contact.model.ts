@@ -3,10 +3,11 @@ import { IGroup } from "../group/group.model";
 export interface IContact {
   id: string;
   name: string;
-  email: string;
+  email?: string;
+  phone?: string;
   createdAt: Date;
   updatedAt: Date;
-  lastContactedAt: Date;
-  groups?: IGroup[];
-  contactInfo?: IContactInfo;
+  lastContactedAt?: Date;
+  group: IGroup;
+  // contactInfo?: IContactInfo;
 }

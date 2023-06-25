@@ -4,11 +4,12 @@ import { User } from "../../orm/entity/User";
 import bcrypt from "bcryptjs";
 import { v4 } from "uuid";
 import { SuccessResponse } from "../../presentation/SuccessResponse";
+import { IUser } from "./user.model";
 
 export const UserApplication = {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const user = {
+      const user: IUser = {
         id: v4(),
         name: req.body.name,
         email: req.body.email,
@@ -37,7 +38,7 @@ export const UserApplication = {
         req,
         res,
         message: "User created successfully",
-        data: {
+        data: <IUser>{
           id: user.id,
           name: user.name,
           email: user.email,
@@ -61,11 +62,12 @@ export const UserApplication = {
         req,
         res,
         message: "User found successfully",
-        data: {
+        data: <IUser>{
           id: user?.id,
           name: user?.name,
           email: user?.email,
           createdAt: user?.createdAt,
+          updatedAt: user?.updatedAt,
         },
       });
     } catch (err: any) {
@@ -81,12 +83,13 @@ export const UserApplication = {
         req,
         res,
         message: "Users found successfully",
-        data: users.map((user) => {
+        data: users.map((user): IUser => {
           return {
             id: user?.id,
             name: user?.name,
             email: user?.email,
             createdAt: user?.createdAt,
+            updatedAt: user?.updatedAt,
           };
         }),
       });
@@ -108,7 +111,7 @@ export const UserApplication = {
         req,
         res,
         message: "User updated successfully",
-        data: {
+        data: <IUser>{
           id: req.params.id,
           name: req.body.name,
           email: req.body.email,
@@ -127,7 +130,7 @@ export const UserApplication = {
         req,
         res,
         message: "User deleted successfully",
-        data: {
+        data: <IUser>{
           id: req.params.id,
           name: req.body.name,
           email: req.body.email,

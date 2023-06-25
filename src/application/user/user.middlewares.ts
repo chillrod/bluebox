@@ -21,4 +21,20 @@ export const UserMiddlewares = {
       next(err);
     }
   },
+
+  userExists: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const user = await AppDataSource.getRepository(User).findOne({
+        where: {
+          id: req.params.id,
+        },
+      });
+
+      if (!user) throw new Error("User not found");
+
+      next();
+    } catch (err: any) {
+      next(err);
+    }
+  },
 };

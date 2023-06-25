@@ -3,10 +3,11 @@ interface IErrorResponse {
   res: Response;
   message: string;
   errors?: string[];
+  status?: number;
 }
 
 export const ErrorResponse = (props: IErrorResponse) => {
-  return props.res.status(400).json({
+  return props.res.status(props.status || 500).json({
     success: false,
     data: {
       message: props.message,

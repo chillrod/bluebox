@@ -1,7 +1,6 @@
 import { DataSource } from "typeorm";
-import { Companies } from "./entity/Companies";
-import { Products } from "./entity/Products";
 import { User } from "./entity/User";
+import { Integrations } from "./entity/Integrations";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -12,7 +11,7 @@ export const AppDataSource = new DataSource({
   database: "bluebox",
   synchronize: true,
   logging: true,
-  entities: [User, Companies, Products],
+  entities: [User, Integrations],
   subscribers: [],
   migrations: [],
 });

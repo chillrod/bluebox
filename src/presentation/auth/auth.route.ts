@@ -1,15 +1,9 @@
 import { Router } from "express";
 import { AuthApplication } from "../../application/auth";
-import { UserMiddlewares } from "../../application/user/middlewares";
+import { AuthMiddlewares } from "../../application/auth/middlewares";
 
 const route = Router();
 
-route.post("/", UserMiddlewares.userExists, AuthApplication.sign);
-
-route.post(
-  "/refresh",
-  UserMiddlewares.userExists,
-  AuthApplication.refreshToken
-);
+route.post("/", AuthMiddlewares.validCredentials, AuthApplication.sign);
 
 export { route as AuthRoute };

@@ -1,25 +1,24 @@
 import { NextFunction, Request, Response } from "express";
 import { AppDataSource } from "../../../orm/data-source";
 import { User } from "../../../orm/entity/User";
-import { ErrorResponse } from "../../../presentation/ErrorResponse";
 
 export const UserMiddlewares = {
-  userExists: async (req: Request, res: Response, next: NextFunction) => {
+  isSameUser: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userExists = await AppDataSource.getRepository(User).exist({
+      const user = await AppDataSource.getRepository(User).findOne({
         where: {
           id: req.params.id,
         },
       });
 
-      if (!userExists) throw new Error("User does not exists");
+      if (!user) throw new Error("User not found");
 
-      return next();
+      if (user.id !== req.params.id)
+        throw new Error("You can only update your own data");
+
+      next();
     } catch (err: any) {
-      return ErrorResponse({
-        res,
-        message: err.message,
-      });
+      next(err);
     }
   },
 };

@@ -4,20 +4,23 @@ import { UserApplication } from "../../application/user";
 import { UserMiddlewares } from "../../application/user/middlewares";
 
 const route = Router();
-const middlewares = [
-  AuthMiddlewares.verifyToken,
-  UserMiddlewares.userExists,
-  AuthMiddlewares.isSameUser,
-];
 
 route.get("/", AuthMiddlewares.verifyToken, UserApplication.getAll);
 
+route.get("/:id", AuthMiddlewares.verifyToken, UserApplication.get);
+
 route.post("/create", UserApplication.create);
 
-route.get("/:id", middlewares, UserApplication.get);
+route.put(
+  "/:id",
+  [AuthMiddlewares.verifyToken, UserMiddlewares.isSameUser],
+  UserApplication.update
+);
 
-route.put("/:id", middlewares, UserApplication.update);
-
-route.delete("/:id", middlewares, UserApplication.delete);
+route.delete(
+  "/:id",
+  [AuthMiddlewares.verifyToken, UserMiddlewares.isSameUser],
+  UserApplication.delete
+);
 
 export { route as UsersRoute };

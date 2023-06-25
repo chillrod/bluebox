@@ -20,7 +20,4 @@ export class User implements IUser {
 
   @Column()
   updatedAt: Date;
-
-  @Column()
-  role: number;
 }

@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { AppDataSource } from "../../orm/data-source";
 import { User } from "../../orm/entity/User";
 import bcrypt from "bcryptjs";
@@ -7,7 +7,7 @@ import { ErrorResponse } from "../../presentation/ErrorResponse";
 import { SuccessResponse } from "../../presentation/SuccessResponse";
 
 export const UserApplication = {
-  async create(req: Request, res: Response) {
+  async create(req: Request, res: Response, next: NextFunction) {
     try {
       const user = {
         id: v4(),
@@ -16,12 +16,11 @@ export const UserApplication = {
         password: req.body.password
           ? bcrypt.hashSync(req.body.password, 10)
           : "",
-        role: req.body.role,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
 
-      if (!user.name || !user.password || !user.email || !user.role) {
+      if (!user.name || !user.password || !user.email) {
         throw new Error("Missing user data");
       }
 
@@ -43,18 +42,15 @@ export const UserApplication = {
           id: user.id,
           name: user.name,
           email: user.email,
-          role: user.role,
+          createdAt: user.createdAt,
         },
       });
     } catch (err: any) {
-      return ErrorResponse({
-        res,
-        message: err.message,
-      });
+      next(err);
     }
   },
 
-  async get(req: Request, res: Response) {
+  async get(req: Request, res: Response, next: NextFunction) {
     try {
       const user = await AppDataSource.getRepository(User).findOne({
         where: {
@@ -70,19 +66,15 @@ export const UserApplication = {
           id: user?.id,
           name: user?.name,
           email: user?.email,
-          role: user?.role,
           createdAt: user?.createdAt,
         },
       });
     } catch (err: any) {
-      return ErrorResponse({
-        res,
-        message: err.message,
-      });
+      next(err);
     }
   },
 
-  async getAll(req: Request, res: Response) {
+  async getAll(req: Request, res: Response, next: NextFunction) {
     try {
       const users = await AppDataSource.getRepository(User).find();
 
@@ -90,24 +82,21 @@ export const UserApplication = {
         req,
         res,
         message: "Users found successfully",
-        data: users.map((user) => ({
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          createdAt: user.createdAt,
-          updatedAt: user.updatedAt,
-        })),
+        data: users.map((user) => {
+          return {
+            id: user?.id,
+            name: user?.name,
+            email: user?.email,
+            createdAt: user?.createdAt,
+          };
+        }),
       });
     } catch (err: any) {
-      return ErrorResponse({
-        res,
-        message: err.message,
-      });
+      next(err);
     }
   },
 
-  async update(req: Request, res: Response) {
+  async update(req: Request, res: Response, next: NextFunction) {
     try {
       await AppDataSource.getRepository(User).update(req.params.id, {
         name: req.body.name,
@@ -127,14 +116,11 @@ export const UserApplication = {
         },
       });
     } catch (err: any) {
-      return ErrorResponse({
-        res,
-        message: err.message,
-      });
+      next(err);
     }
   },
 
-  async delete(req: Request, res: Response) {
+  async delete(req: Request, res: Response, next: NextFunction) {
     try {
       await AppDataSource.getRepository(User).delete(req.params.id);
 
@@ -149,10 +135,8 @@ export const UserApplication = {
         },
       });
     } catch (err: any) {
-      return ErrorResponse({
-        res,
-        message: err.message,
-      });
+      console.log("🚀 ~ file: index.ts:128 ~ delete ~ err:", err);
+      next(err);
     }
   },
 };

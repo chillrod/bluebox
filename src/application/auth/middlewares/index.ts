@@ -1,8 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import { ErrorResponse } from "../../../presentation/ErrorResponse";
+
 import jwt from "jsonwebtoken";
 import { AppDataSource } from "../../../orm/data-source";
 import { User } from "../../../orm/entity/User";
+
+import bcrypt from "bcryptjs";
 
 export const AuthMiddlewares = {
   async verifyToken(req: Request, res: Response, next: NextFunction) {
@@ -13,10 +16,7 @@ export const AuthMiddlewares = {
 
       jwt.verify(token, process.env.JWT_SECRET as string, (err, decode) => {
         if (err) {
-          return ErrorResponse({
-            res,
-            message: "Token is not valid",
-          });
+          throw new Error("Invalid token");
         } else {
           res.locals.email = decode;
           res.locals.token = token;
@@ -24,33 +24,29 @@ export const AuthMiddlewares = {
           next();
         }
       });
-    } catch (error: any) {
-      return ErrorResponse({
-        res,
-        message: error.message,
-      });
+    } catch (err) {
+      next(err);
     }
   },
-  async isSameUser(req: Request, res: Response, next: NextFunction) {
+
+  async validCredentials(req: Request, res: Response, next: NextFunction) {
     try {
-      const isUserEmail = await AppDataSource.getRepository(User).findOne({
+      const user = await AppDataSource.getRepository(User).findOne({
         where: {
-          id: req.params.id,
+          email: req.body.email,
         },
       });
 
-      const isNotSameUser = isUserEmail?.email !== jwt.decode(res.locals.token);
+      const comparePass = await bcrypt.compare(
+        req.body.password,
+        user?.password || ""
+      );
 
-      if (isNotSameUser) {
-        throw new Error("You are not authorized to access this user");
-      } else {
-        next();
-      }
-    } catch (error: any) {
-      return ErrorResponse({
-        res,
-        message: error.message,
-      });
+      if (!comparePass) throw new Error("Invalid credentials");
+
+      next();
+    } catch (err) {
+      next(err);
     }
   },
 };
